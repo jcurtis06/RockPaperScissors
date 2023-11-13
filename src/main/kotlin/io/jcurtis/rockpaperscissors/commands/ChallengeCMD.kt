@@ -11,7 +11,7 @@ import java.util.stream.Collectors
 class ChallengeCMD : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         if (sender !is Player) return false
-        if (sender.hasPermission("rps.challenge") == false) {
+        if (!sender.hasPermission("rps.challenge")) {
             sender.sendMessage("You do not have permission to use this command.")
             return true
         }
@@ -37,10 +37,8 @@ class ChallengeCMD : CommandExecutor, TabCompleter {
         if (command.name.equals("rps", ignoreCase = true)) {
             if (args.size == 1) {
                 val completions = ArrayList<String>()
-                // Add 'accept' as a suggestion
                 completions.add("accept")
 
-                // Add online player names as suggestions
                 if (sender is Player) {
                     val players = sender.server.onlinePlayers.stream()
                         .map { it.name }
