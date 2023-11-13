@@ -9,5 +9,6 @@ class RockPaperScissors: JavaPlugin() {
     override fun onEnable() {
         server.pluginManager.registerEvents(GameManager, this)
         getCommand("rps")?.setExecutor(ChallengeCMD())
+        getCommand("rps")?.setTabCompleter(ChallengeCMD())
     }
 }

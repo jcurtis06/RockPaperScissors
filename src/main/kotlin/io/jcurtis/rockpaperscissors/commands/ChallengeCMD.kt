@@ -11,6 +11,10 @@ import java.util.stream.Collectors
 class ChallengeCMD : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         if (sender !is Player) return false
+        if (sender.hasPermission("rps.challenge") == false) {
+            sender.sendMessage("You do not have permission to use this command.")
+            return true
+        }
 
         if (args == null || args.isEmpty()) {
             sender.sendMessage("Usage: /rps <player>|accept")
