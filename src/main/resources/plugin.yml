@@ -1,4 +1,7 @@
-main: io.jcurtis.kotlinexample.KotlinPaper
+main: io.jcurtis.rockpaperscissors.RockPaperScissors
 version: 1.0
-name: KotlinPaper
+name: RockPaperScissors
 api-version: 1.19
+commands:
+  rps:
+    description: Play Rock Paper Scissors
