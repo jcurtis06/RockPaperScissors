@@ -4,9 +4,11 @@ import io.jcurtis.rockpaperscissors.game.GameManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
+import java.util.stream.Collectors
 
-class ChallengeCMD : CommandExecutor {
+class ChallengeCMD : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         if (sender !is Player) return false
 
@@ -25,5 +27,28 @@ class ChallengeCMD : CommandExecutor {
         }
 
         return true
+    }
+
+    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String>? {
+        if (command.name.equals("rps", ignoreCase = true)) {
+            if (args.size == 1) {
+                val completions = ArrayList<String>()
+                // Add 'accept' as a suggestion
+                completions.add("accept")
+
+                // Add online player names as suggestions
+                if (sender is Player) {
+                    val players = sender.server.onlinePlayers.stream()
+                        .map { it.name }
+                        .filter { it != sender.name }
+                        .collect(Collectors.toList())
+
+                    completions.addAll(players)
+                }
+
+                return completions
+            }
+        }
+        return null
     }
 }
