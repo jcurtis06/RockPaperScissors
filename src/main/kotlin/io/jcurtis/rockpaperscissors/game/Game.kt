@@ -1,5 +1,7 @@
 package io.jcurtis.rockpaperscissors.game
 
+import io.jcurtis.rockpaperscissors.ConfigReader
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -15,23 +17,41 @@ class Game(private val challenger: Player, private val challenged: Player) : Lis
         challenged.openInventory(gui.inventory)
     }
 
-    fun checkWin() {
-        val result = when {
-            challengerChoice == challengedChoice -> "It's a tie!"
-            challengerChoice.beats(challengedChoice) -> "${challenger.name} wins!"
-            else -> "${challenged.name} wins!"
+    private fun checkWin() {
+        val challengerMessage = when {
+            challengerChoice == challengedChoice ->
+                ConfigReader.getMsg("challenge-tie")
+                    .replace("%player%", challenged.name)
+            challengerChoice.beats(challengedChoice) ->
+                ConfigReader.getMsg("challenge-won")
+                    .replace("%player%", challenged.name)
+            else ->
+                ConfigReader.getMsg("challenge-lost")
+                    .replace("%player%", challenged.name)
         }
 
-        challenger.sendMessage(result)
-        challenged.sendMessage(result)
+        val challengedMessage = when {
+            challengerChoice == challengedChoice ->
+                ConfigReader.getMsg("challenge-tie")
+                    .replace("%player%", challenger.name)
+            challengedChoice.beats(challengerChoice) ->
+                ConfigReader.getMsg("challenge-won")
+                    .replace("%player%", challenger.name)
+            else ->
+                ConfigReader.getMsg("challenge-lost")
+                    .replace("%player%", challenger.name)
+        }
+
+        challenger.sendMessage(challengerMessage)
+        challenged.sendMessage(challengedMessage)
+
+        challenger.playSound(challenger.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
+        challenged.playSound(challenged.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
 
         end()
     }
 
-    fun end() {
-        challenger.closeInventory()
-        challenged.closeInventory()
-
+    private fun end() {
         GameManager.removeGame(this)
     }
 
@@ -42,11 +62,30 @@ class Game(private val challenger: Player, private val challenged: Player) : Lis
 
         if (player == challenger) {
             challengerChoice = Choice.entries.toTypedArray()[event.slot - 3]
-            player.sendMessage("Challenger: You have chosen ${challengerChoice.name}.")
+
+            player.sendMessage(
+                ConfigReader.getMsg("item-chosen")
+                    .replace("%item%", challengerChoice.name.lowercase())
+            )
+
+            player.sendMessage(
+                ConfigReader.getMsg("challenge-waiting")
+                    .replace("%player%", challenged.name)
+            )
         } else if (player == challenged) {
             challengedChoice = Choice.entries.toTypedArray()[event.slot - 3]
-            player.sendMessage("Challenged: You have chosen ${challengedChoice.name}.")
+            player.sendMessage(
+                ConfigReader.getMsg("item-chosen")
+                    .replace("%item%", challengedChoice.name.lowercase())
+            )
+
+            player.sendMessage(
+                ConfigReader.getMsg("challenge-waiting")
+                    .replace("%player%", challenger.name)
+            )
         }
+
+        player.closeInventory()
 
         if (challengerChoice != Choice.NONE && challengedChoice != Choice.NONE) {
             checkWin()

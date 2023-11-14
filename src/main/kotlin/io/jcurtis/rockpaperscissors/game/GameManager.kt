@@ -1,5 +1,6 @@
 package io.jcurtis.rockpaperscissors.game
 
+import io.jcurtis.rockpaperscissors.ConfigReader
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -13,13 +14,21 @@ object GameManager: Listener {
 
     fun challenge(challenger: Player, challenged: Player) {
         pendingChallenges[challenger] = challenged
-        challenged.sendMessage("${challenger.name} has challenged you to a game of Rock Paper Scissors! Type /rps accept to accept the challenge.")
-        challenger.sendMessage("You have challenged ${challenged.name} to a game of Rock Paper Scissors!")
+
+        challenger.sendMessage(
+            ConfigReader.getMsg("challenge-sent").replace("%player%", challenged.name)
+        )
+
+        challenged.sendMessage(
+            ConfigReader.getMsg("challenge-received").replace("%player%", challenger.name)
+        )
     }
 
     fun accept(player: Player) {
         if (!pendingChallenges.values.contains(player)) {
-            player.sendMessage("You have no pending challenges.")
+            player.sendMessage(
+                ConfigReader.getMsg("error").replace("%message%", "No pending challenges.")
+            )
             return
         }
 
