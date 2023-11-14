@@ -7,7 +7,7 @@ It's free, open source, and consistently updated to bring new and exciting featu
 
 ![rps_usage](https://github.com/jcurtis06/RockPaperScissors/assets/77545656/98dd9a4e-9419-48a0-b7e3-66a0bd1a7946)
 
-**/rps <player>**
+**/rps [player]**
 - Sends a challenge to the selected player
 - Requires permission "rps.challenge"
 
