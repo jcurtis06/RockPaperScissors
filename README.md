@@ -10,6 +10,7 @@ It's free, open source, and consistently updated to bring new and exciting featu
 **/rps <player>**
 - Sends a challenge to the selected player
 - Requires permission "rps.challenge"
+
 **/rps accept**
 - Accepts the most recent challenge received
 - Requires permission "rps.challenge"
