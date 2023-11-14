@@ -1,5 +1,6 @@
 package io.jcurtis.rockpaperscissors.commands
 
+import io.jcurtis.rockpaperscissors.ConfigReader
 import io.jcurtis.rockpaperscissors.game.GameManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -12,12 +13,20 @@ class ChallengeCMD : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         if (sender !is Player) return false
         if (!sender.hasPermission("rps.challenge")) {
-            sender.sendMessage("You do not have permission to use this command.")
+            sender.sendMessage(
+                ConfigReader.getMsg("error")
+                    .replace("%message%", "You do not have permission to use this command.")
+            )
+
             return true
         }
 
         if (args == null || args.isEmpty()) {
-            sender.sendMessage("Usage: /rps <player>|accept")
+            sender.sendMessage(
+                ConfigReader.getMsg("error")
+                    .replace("%message%", "Usage: /rps <player|accept>")
+            )
+
             return true
         }
 
@@ -25,7 +34,10 @@ class ChallengeCMD : CommandExecutor, TabCompleter {
             GameManager.accept(sender)
         } else {
             GameManager.challenge(sender, sender.server.getPlayer(args[0]) ?: run {
-                sender.sendMessage("Player not found.")
+                sender.sendMessage(
+                    ConfigReader.getMsg("error")
+                        .replace("%message%", "Player not found.")
+                )
                 return true
             })
         }

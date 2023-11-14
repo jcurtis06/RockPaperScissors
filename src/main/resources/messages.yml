@@ -1,0 +1,13 @@
+prefix: "§a§l[§r§9RPS§a§l]"
+
+challenge-sent: "§7You have challenged §a%player%§7!"
+challenge-received: "§7You have been challenged by §a%player%§7!"
+challenge-waiting: "§7Waiting for §a%player%§7 to choose an item!"
+
+item-chosen: "§7You have chosen §a%item%§7!"
+
+challenge-tie: "§7You have tied with §a%player%§7!"
+challenge-won: "§7You have won against §a%player%§7!"
+challenge-lost: "§7You have lost against §a%player%§7!"
+
+error: "§7%message%"
