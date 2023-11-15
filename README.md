@@ -4,7 +4,7 @@
 A simple plugin that allows players to 1v1 each other in a game of Rock, Paper, Scissors!
 
 <p align="center">
-  <img src="https://im2.ezgif.com/tmp/ezgif-2-6d532a76a3.gif" />
+  <img src="https://i.imgur.com/loZV9Tq.gif" />
 </p>
 
 It's free, open source, and consistently updated to bring new and exciting features.
